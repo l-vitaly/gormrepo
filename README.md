@@ -94,6 +94,8 @@ GetAll() ([]*T, error)
 
 GetBy(criteria ...gormrepo.CriteriaOption) ([]*T, error)
 
+GetOne(criteria ...gormrepo.CriteriaOption) ([]*T, error)
+
 GetByFirst(criteria ...gormrepo.CriteriaOption) (*T, error)
 
 GetByLast(criteria ...gormrepo.CriteriaOption) (*T, error)
