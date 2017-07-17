@@ -282,6 +282,19 @@ func (r %[1]s) GetBy(criteria ...gormrepo.CriteriaOption) ([]%[2]s, error) {
 }
 `
 
+const repoGetByOne = `
+func (r r %[1]s) GetOneBy(criteria ...gormrepo.CriteriaOption) (%[2]s, error) {
+	entities, err := r.GetBy(criteria...)
+    if err != nil {
+      return nil, err
+    }
+	if len(entities) < 1 {
+		return nil, gorm.ErrRecordNotFound
+	}
+	return entities[0], nil
+}
+`
+
 const repoGetByFirst = `
 func (r %[1]s) GetByFirst(criteria ...gormrepo.CriteriaOption) (%[2]s, error) {
     var entity %[3]s
