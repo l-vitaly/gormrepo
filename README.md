@@ -6,7 +6,7 @@ Gormrepo is a repository generator for Gorm.
 # Install
 
 ``` bash
-$ go get github.com/l-vitaly/cmd/gormrepogen/...
+$ go get github.com/l-vitaly/gormrepo/cmd/gormrepogen/...
 ```
 
 For example, given this struct: 
