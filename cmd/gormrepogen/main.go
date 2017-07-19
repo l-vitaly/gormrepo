@@ -221,6 +221,7 @@ func (g *Generator) generate(typeName string) {
 		g.Printf(repoGet, repoNameRecv, typeNameWithPointer, typeName)
 		g.Printf(repoGetAll, repoNameRecv, typeNameWithPointer)
 		g.Printf(repoGetBy, repoNameRecv, typeNameWithPointer)
+        g.Printf(repoGetByOne, repoNameRecv, typeNameWithPointer)
 		g.Printf(repoGetByFirst, repoNameRecv, typeNameWithPointer, typeName)
 		g.Printf(repoGetByLast, repoNameRecv, typeNameWithPointer, typeName)
 		g.Printf(repoCreate, repoNameRecv, typeName, typeNameWithPointer)
