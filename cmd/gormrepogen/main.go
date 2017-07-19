@@ -257,7 +257,7 @@ type %[1]s struct {
 
 const repoRelated = `
 func (r %[1]s) Related(claim %[2]s, related interface{}, criteria ...gormrepo.CriteriaOption) (%[2]s, error) {
-	err := r.ApplyCriteria(criteria).Model(claim).Related(&related).Error
+	err := r.ApplyCriteria(criteria).Model(claim).Related(related).Error
 	return claim, err
 }
 `
