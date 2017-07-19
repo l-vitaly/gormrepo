@@ -284,7 +284,7 @@ func (r %[1]s) GetBy(criteria ...gormrepo.CriteriaOption) ([]%[2]s, error) {
 `
 
 const repoGetByOne = `
-func (r r %[1]s) GetOneBy(criteria ...gormrepo.CriteriaOption) (%[2]s, error) {
+func (r %[1]s) GetOneBy(criteria ...gormrepo.CriteriaOption) (%[2]s, error) {
 	entities, err := r.GetBy(criteria...)
     if err != nil {
       return nil, err
