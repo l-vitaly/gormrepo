@@ -256,7 +256,7 @@ func (g *Generator) generate(typeName string) {
 
 const baseRepo = `
 type %[1]s struct {
-	gormrepo.Repo
+    *gorm.DB
 }`
 
 const repoApplyCriteria = `
