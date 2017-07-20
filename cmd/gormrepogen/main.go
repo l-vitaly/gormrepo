@@ -326,8 +326,8 @@ func (r %[1]s) Create(entity %[2]s) (%[3]s, error) {
 `
 
 const repoUpdate = `
-func (r %[1]s) Update(entity %[2]s, fields gormrepo.Fields, criteria ...gormrepo.CriteriaOption) (%[2]s, error) {
-    err := r.applyCriteria(criteria).Model(&entity).Updates(fields).Error
+func (r %[1]s) Update(entity %[2]s, fields gormrepo.Fields, criteria ...gormrepo.CriteriaOption) error {
+    err := r.applyCriteria(criteria).Model(entity).Updates(fields).Error
 	if err != nil {
 		return nil, err
 	}
