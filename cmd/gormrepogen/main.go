@@ -214,6 +214,7 @@ func (g *Generator) generate(typeName string) {
 		g.Printf("\n")
 		g.Printf("import (\n")
 		g.Printf("  \"github.com/l-vitaly/gormrepo\"\n")
+        g.Printf("  \"github.com/jinzhu/gorm\"\n")
 		g.Printf(")\n")
 
 		g.Printf(baseRepo, repoName)
