@@ -260,7 +260,7 @@ type %[1]s struct {
 }`
 
 const repoApplyCriteria = `
-func (r %[1]s) applyCriteria(criteria []CriteriaOption) *gorm.DB {
+func (r %[1]s) applyCriteria(criteria []gormrepo.CriteriaOption) *gorm.DB {
 	search := r.DB
 	for _, co := range criteria {
 		search = co(search)
