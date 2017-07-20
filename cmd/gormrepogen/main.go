@@ -222,7 +222,6 @@ func (g *Generator) generate(typeName string) {
 		g.Printf(repoGet, repoNameRecv, typeNameWithPointer, typeName)
 		g.Printf(repoGetAll, repoNameRecv, typeNameWithPointer)
 		g.Printf(repoGetBy, repoNameRecv, typeNameWithPointer)
-        g.Printf(repoGetByOne, repoNameRecv, typeNameWithPointer)
 		g.Printf(repoGetByFirst, repoNameRecv, typeNameWithPointer, typeName)
 		g.Printf(repoGetByLast, repoNameRecv, typeNameWithPointer, typeName)
 		g.Printf(repoCreate, repoNameRecv, typeName, typeNameWithPointer)
@@ -294,19 +293,6 @@ func (r %[1]s) GetBy(criteria ...gormrepo.CriteriaOption) ([]%[2]s, error) {
     var entities []%[2]s
 	err := r.applyCriteria(criteria).Find(&entities).Error
 	return entities, err
-}
-`
-
-const repoGetByOne = `
-func (r %[1]s) GetOneBy(criteria ...gormrepo.CriteriaOption) (%[2]s, error) {
-	entities, err := r.GetBy(criteria...)
-    if err != nil {
-      return nil, err
-    }
-	if len(entities) < 1 {
-		return nil, gorm.ErrRecordNotFound
-	}
-	return entities[0], nil
 }
 `
 
