@@ -217,7 +217,8 @@ func (g *Generator) generate(typeName string) {
 		g.Printf(")\n")
 
 		g.Printf(baseRepo, repoName)
-		g.Printf(repoRelated, repoNameRecv, typeNameWithPointer)
+		g.Printf(repoApplyCriteria, repoNameRecv)
+        g.Printf(repoRelated, repoNameRecv, typeNameWithPointer)
 		g.Printf(repoGet, repoNameRecv, typeNameWithPointer, typeName)
 		g.Printf(repoGetAll, repoNameRecv, typeNameWithPointer)
 		g.Printf(repoGetBy, repoNameRecv, typeNameWithPointer)
@@ -258,9 +259,19 @@ type %[1]s struct {
 	gormrepo.Repo
 }`
 
+const repoApplyCriteria = `
+func (r %[1]s) applyCriteria(criteria []CriteriaOption) *gorm.DB {
+	search := r.DB
+	for _, co := range criteria {
+		search = co(search)
+	}
+	return search
+}
+`
+
 const repoRelated = `
 func (r %[1]s) Related(claim %[2]s, related interface{}, criteria ...gormrepo.CriteriaOption) (%[2]s, error) {
-	err := r.ApplyCriteria(criteria).Model(claim).Related(related).Error
+	err := r.applyCriteria(criteria).Model(claim).Related(related).Error
 	return claim, err
 }
 `
@@ -281,7 +292,7 @@ func (r %[1]s) GetAll() ([]%[2]s, error) {
 const repoGetBy = `
 func (r %[1]s) GetBy(criteria ...gormrepo.CriteriaOption) ([]%[2]s, error) {
     var entities []%[2]s
-	err := r.ApplyCriteria(criteria).Find(&entities).Error
+	err := r.applyCriteria(criteria).Find(&entities).Error
 	return entities, err
 }
 `
@@ -302,7 +313,7 @@ func (r %[1]s) GetOneBy(criteria ...gormrepo.CriteriaOption) (%[2]s, error) {
 const repoGetByFirst = `
 func (r %[1]s) GetByFirst(criteria ...gormrepo.CriteriaOption) (%[2]s, error) {
     var entity %[3]s
-	err := r.ApplyCriteria(criteria).First(&entity).Error
+	err := r.applyCriteria(criteria).First(&entity).Error
 	return &entity, err
 }
 `
@@ -310,7 +321,7 @@ func (r %[1]s) GetByFirst(criteria ...gormrepo.CriteriaOption) (%[2]s, error) {
 const repoGetByLast = `
 func (r %[1]s) GetByLast(criteria ...gormrepo.CriteriaOption) (%[2]s, error) {
     var entity %[3]s
-	err := r.ApplyCriteria(criteria).Last(&entity).Error
+	err := r.applyCriteria(criteria).Last(&entity).Error
 	return &entity, err
 }
 `
@@ -330,7 +341,7 @@ func (r %[1]s) Create(entity %[2]s) (%[3]s, error) {
 
 const repoUpdate = `
 func (r %[1]s) Update(entity %[2]s, fields gormrepo.Fields, criteria ...gormrepo.CriteriaOption) (%[2]s, error) {
-    err := r.ApplyCriteria(criteria).Model(&entity).Updates(fields).Error
+    err := r.applyCriteria(criteria).Model(&entity).Updates(fields).Error
 	if err != nil {
 		return nil, err
 	}
