@@ -227,6 +227,9 @@ func (g *Generator) generate(typeName string) {
 		g.Printf(repoCreate, repoNameRecv, typeName, typeNameWithPointer)
 		g.Printf(repoUpdate, repoNameRecv, typeNameWithPointer)
 		g.Printf(repoAutomigrate, repoNameRecv, typeName)
+        g.Printf(repoAddUniqueIndex, repoNameRecv, typeName)
+        g.Printf(repoAddForeignKey, repoNameRecv, typeName)
+        g.Printf(repoAddIndex, repoNameRecv, typeName)
 
 		//Format the output.
 		src := g.format()
@@ -338,5 +341,21 @@ func (r %[1]s) Update(entity %[2]s, fields gormrepo.Fields, criteria ...gormrepo
 const repoAutomigrate = `
 func (r %[1]s) AutoMigrate() error {
     return r.DB.AutoMigrate(&%[2]s{}).Error
+}
+`
+
+const repoAddUniqueIndex = `
+func (r %[1]s) AddUniqueIndex(name string, columns ...string) error {
+    return r.DB.Model(&%[2]s{}).AddUniqueIndex(name, columns...).Error
+}
+`
+const repoAddForeignKey = `
+func (r %[1]s) AddForeignKey(field string, dest string, onDelete string, onUpdate string) error {
+    return r.DB.Model(&%[2]s{}).AddForeignKey(field, dest, onDelete, onUpdate).Error
+}
+`
+const repoAddIndex = `
+func (r %[1]s) AddIndex(name string, columns ...string) error {
+    return r.DB.Model(&%[2]s{}).AddIndex(name, columns...).Error
 }
 `
