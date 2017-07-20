@@ -226,6 +226,7 @@ func (g *Generator) generate(typeName string) {
 		g.Printf(repoGetByLast, repoNameRecv, typeNameWithPointer, typeName)
 		g.Printf(repoCreate, repoNameRecv, typeName, typeNameWithPointer)
 		g.Printf(repoUpdate, repoNameRecv, typeNameWithPointer)
+        g.Printf(repoDelete, repoNameRecv, typeNameWithPointer)
 		g.Printf(repoAutomigrate, repoNameRecv, typeName)
         g.Printf(repoAddUniqueIndex, repoNameRecv, typeName)
         g.Printf(repoAddForeignKey, repoNameRecv, typeName)
@@ -269,9 +270,8 @@ func (r %[1]s) applyCriteria(criteria []gormrepo.CriteriaOption) *gorm.DB {
 `
 
 const repoRelated = `
-func (r %[1]s) Related(claim %[2]s, related interface{}, criteria ...gormrepo.CriteriaOption) (%[2]s, error) {
-	err := r.applyCriteria(criteria).Model(claim).Related(related).Error
-	return claim, err
+func (r %[1]s) Related(claim %[2]s, related interface{}, criteria ...gormrepo.CriteriaOption) error {
+	return r.applyCriteria(criteria).Model(claim).Related(related).Error
 }
 `
 
@@ -327,11 +327,13 @@ func (r %[1]s) Create(entity %[2]s) (%[3]s, error) {
 
 const repoUpdate = `
 func (r %[1]s) Update(entity %[2]s, fields gormrepo.Fields, criteria ...gormrepo.CriteriaOption) error {
-    err := r.applyCriteria(criteria).Model(entity).Updates(fields).Error
-	if err != nil {
-		return nil, err
-	}
-	return entity, nil
+    return r.applyCriteria(criteria).Model(entity).Updates(fields).Error
+}
+`
+
+const repoDelete = `
+func (r %[1]s) Delete(entity %[2]s, criteria ...gormrepo.CriteriaOption) error {
+	return r.applyCriteria(criteria).Delete(entity).Error
 }
 `
 
