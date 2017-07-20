@@ -66,27 +66,3 @@ func Preload(field string) CriteriaOption {
 		return db.Preload(field)
 	}
 }
-
-type Repo struct {
-	DB *gorm.DB
-}
-
-func (r *Repo) ApplyCriteria(criteria []CriteriaOption) *gorm.DB {
-	search := r.DB
-	for _, co := range criteria {
-		search = co(search)
-	}
-	return search
-}
-
-func (r *Repo) AddUniqueIndex(name string, columns ...string) error {
-	return r.DB.AddUniqueIndex(name, columns...).Error
-}
-
-func (r *Repo) AddForeignKey(field string, dest string, onDelete string, onUpdate string) error {
-	return r.DB.AddForeignKey(field, dest, onDelete, onUpdate).Error
-}
-
-func (r *Repo) AddIndex(name string, columns ...string) error {
-	return r.DB.AddIndex(name, columns...).Error
-}
